@@ -95,7 +95,62 @@ class matching {
                 { 5, 6, 7, 8, 9 }, { 5, 6, 7, 8, 9 }, { 5, 6, 7, 8, 9 }, { 5, 6, 7, 8, 9 }, { 5, 6, 7, 8, 9 },
 
                 // company preferences
-                { 4, 0, 3, 1, 2 }, { 3, 4, 1, 0, 2 }, { 3, 1, 2, 4, 0 }, { 2, 1, 3, 0, 4 }, { 0, 3, 1, 2, 4 } };
-        match(prefer);
+                { 4, 0, 3, 1, 2 }, { 3, 4, 1, 0, 2 }, { 3, 1, 2, 4, 0 }, { 2, 1, 3, 0, 4 }, { 0, 3, 1, 2, 4 } 
+            };
+            
+            match(prefer);
+    }
+
+    //private static Partner[]
+
+    protected enum Role {COMPANY, PROGRAMMER};
+
+    protected class Partner {
+        public final Role role;
+        public final String[] preferences;
+        public final String name; // will likely be a number for programmers,
+        // but it's a String because we're not doing math with it.
+        
+        // Dissatisfaction being minimized rather than satisfaction being
+        // maximized looks weird, but it allows us to set a Partner's like
+        // or dislike of whoever they're paired with to its position
+        // in the preferences array.
+        private int currentDissatisfaction;
+        private Partner currentPartner;
+
+        public Partner(String name, Role role, String[] preferences){
+            this.name = name;
+            this.role = role;
+            this.preferences = preferences;
+        }
+
+        public void setNewPartner(Partner newPartner){
+            currentPartner = newPartner;
+            currentDissatisfaction = getDissatisfaction(newPartner);
+        } 
+
+        public int getCurrentDissatisfaction() {
+            return currentDissatisfaction;
+        }
+
+        public int getDissatisfaction(String otherName) throws IllegalArgumentException{
+            for(int i = 0; i < preferences.length; i++){
+                if (preferences[i] == otherName){
+                    return i;
+                }
+            }
+            throw new IllegalArgumentException("Key " + otherName + " was not found in the list of preferences.");
+        }
+
+        public int getDissatisfaction(Partner other){
+            return getDissatisfaction(other.name);
+        }
+
+        public boolean wouldPrefer(Partner other){
+            return getDissatisfaction(other) < currentDissatisfaction;
+        }
+
+
+
     }
 }

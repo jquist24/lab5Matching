@@ -1,4 +1,5 @@
-import java.util.*;
+import java.util.Scanner;
+import java.util.Arrays;
 
 class matching {
 
@@ -90,6 +91,25 @@ class matching {
 
     // Driver Code
     public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Input number of programmers and companies (same for both): ");
+        int numPartners = scanner.nextInt();
+        System.out.println("Input preferences as numbers.  The first " + numPartners + " elements will be "+
+        "programmers.  Each element should be provided as " + numPartners + " numbers representing partners;"+
+        "be sure to have each preference in the first half be from the second and vice versa!");
+
+        Partner[] programmers = new Partner[numPartners];
+        Partner[] companies = new Partner[numPartners];
+
+        for(int i = 0; i < 2 * numPartners; i++){
+            Partner[] partnerTypeArray = (i < numPartners ? programmers : companies);
+            String[] prefArray = new String[numPartners];
+            for(int j = 0; j < numPartners; j++){
+                prefArray[j] = Integer.toString(scanner.nextInt());
+            }
+            partnerTypeArray[i] = new Partner(Integer.toString(i), (i < numPartners ? Role.PROGRAMMER : Role.COMPANY), prefArray);
+        }
+
         int prefer[][] = new int[][] {
                 // programmer preferences
                 { 5, 6, 7, 8, 9 }, { 5, 6, 7, 8, 9 }, { 5, 6, 7, 8, 9 }, { 5, 6, 7, 8, 9 }, { 5, 6, 7, 8, 9 },
@@ -103,54 +123,4 @@ class matching {
 
     //private static Partner[]
 
-    protected enum Role {COMPANY, PROGRAMMER};
-
-    protected class Partner {
-        public final Role role;
-        public final String[] preferences;
-        public final String name; // will likely be a number for programmers,
-        // but it's a String because we're not doing math with it.
-        
-        // Dissatisfaction being minimized rather than satisfaction being
-        // maximized looks weird, but it allows us to set a Partner's like
-        // or dislike of whoever they're paired with to its position
-        // in the preferences array.
-        private int currentDissatisfaction;
-        private Partner currentPartner;
-
-        public Partner(String name, Role role, String[] preferences){
-            this.name = name;
-            this.role = role;
-            this.preferences = preferences;
-        }
-
-        public void setNewPartner(Partner newPartner){
-            currentPartner = newPartner;
-            currentDissatisfaction = getDissatisfaction(newPartner);
-        } 
-
-        public int getCurrentDissatisfaction() {
-            return currentDissatisfaction;
-        }
-
-        public int getDissatisfaction(String otherName) throws IllegalArgumentException{
-            for(int i = 0; i < preferences.length; i++){
-                if (preferences[i] == otherName){
-                    return i;
-                }
-            }
-            throw new IllegalArgumentException("Key " + otherName + " was not found in the list of preferences.");
-        }
-
-        public int getDissatisfaction(Partner other){
-            return getDissatisfaction(other.name);
-        }
-
-        public boolean wouldPrefer(Partner other){
-            return getDissatisfaction(other) < currentDissatisfaction;
-        }
-
-
-
-    }
 }

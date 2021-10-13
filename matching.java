@@ -7,24 +7,22 @@ class matching
 static int N = 5;
  
 // This function returns true if Company
-// 'w' prefers Programmer 'm1' over Programmer 'm'
-static boolean wPrefersM1OverM(int prefer[][], int w,
-                               int m, int m1)
+// 'company' prefers Programmer 'p1' over Programmer 'p'
+static boolean companyPrefersP1OverP(int prefer[][], int company,
+                               int p, int p1)
 {
-    // Check if w prefers m over
-    // her current engagment m1
+    // Check if current company prefers programmer over
+    // current match p1
     for (int i = 0; i < N; i++)
     {
-        // If m1 comes before m in list of w,
-        // then w prefers her current engagement,
+        // If p1 comes before p in the company's preferences,
+        // then company prefers current match,
         // don't do anything
-        if (prefer[w][i] == m1)
+        if (prefer[company][i] == p1)
             return true;
- 
-        // If m comes before m1 in w's list,
-        // then free her current engagement
-        // and engage her with m
-        if (prefer[w][i] == m)
+        // If p comes before p1 in company's list,
+        // then free p1 and match with p
+        if (prefer[company][i] == p)
         return false;
     }
     return false;
@@ -33,89 +31,79 @@ static boolean wPrefersM1OverM(int prefer[][], int w,
 // Prints match for N programmers and N companies
 static void match(int prefer[][])
 {
-    // Stores partner of company
-    int cPartner[] = new int[N];
+    // Stores programmer of company
+    int companyProgrammer[] = new int[N];
  
     // An array to store availability of programmers.
-    // If pFree[i] is false, then man 'i' is
-    // free, otherwise engaged.
-    boolean pFree[] = new boolean[N];
+    // If pMatched[i] is false, programmer 'p' is
+    // free, otherwise they are matched.
+    boolean pMatched[] = new boolean[N];
  
     // Initialize all programmers and Companies as free
-    Arrays.fill(cPartner, -1);
+    Arrays.fill(companyProgrammer, -1);
     int freeCount = N;
  
     // While there are free programmers
     while (freeCount > 0)
     {
         // Pick the first free programmer
-        // (we could pick any)
-        int m;
-        for (m = 0; m < N; m++)
-            if (pFree[m] == false)
+        int p;
+        for (p = 0; p < N; p++)
+            if (pMatched[p] == false)
                 break;
- 
         // One by one go to all Companies
-        // according to m's preferences.
-        // Here m is the picked free programmer
-        for (int i = 0; i < N &&
-                        pFree[m] == false; i++)
+        // according to p's preferences.
+        // Here p is the picked free programmer
+        for (int i = 0; i < N && pMatched[p] == false; i++)
         {
-            int w = prefer[m][i];
- 
-            // The woman of preference is free,
-            // w and m become partners (Note that
-            // the partnership maybe changed later).
-            // So we can say they are engaged not married
-            if (cPartner[w - N] == -1)
+            int company = prefer[p][i];
+            // If the company of p's preference is free,
+            // company "company" and p become matched for now.
+            if (companyProgrammer[company - N] == -1)
             {
-                cPartner[w - N] = m;
-                pFree[m] = true;
+                companyProgrammer[company - N] = p;
+                pMatched[p] = true;
                 freeCount--;
             }
- 
-            else // If w is not free
+            else // If company is not free
             {
-                // Find current engagement of w
-                int m1 = cPartner[w - N];
- 
-                // If w prefers m over her current engagement m1,
-                // then break the engagement between w and m1 and
-                // engage m with w.
-                if (wPrefersM1OverM(prefer, w, m, m1) == false)
+                // Find current match for company
+                int p1 = companyProgrammer[company - N];
+                // If company prefers programmer p over current match p1,
+                // then break the match between company and p1 and
+                // match p with company.
+                if (companyPrefersP1OverP(prefer, company, p, p1) == false)
                 {
-                    cPartner[w - N] = m;
-                    pFree[m] = true;
-                    pFree[m1] = false;
+                    companyProgrammer[company - N] = p;
+                    pMatched[p] = true;
+                    pMatched[p1] = false;
                 }
-            } // End of Else
-        } // End of the for loop that goes
-          // to all Companies in m's list
-    } // End of main while loop
+            }
+        }
+    }
  
  
-// Print the solution
+// print matches
 System.out.println("Company Programmer");
 for (int i = 0; i < N; i++)
 {
     System.out.print(" ");
-    System.out.println(i + N + "     " +
-                           cPartner[i]);
+    System.out.println(i + N + "     " + companyProgrammer[i]);
 }
 }
  
-// Driver Code
+// Driver
 public static void main(String[] args)
 {
     int prefer[][] = new int[][]{
-    // programmer preferences
+    // The first array is the programmer's company preferences
     {5,6,7,8,9},
     {5,6,7,8,9},
     {5,6,7,8,9},
     {5,6,7,8,9},
     {5,6,7,8,9},
 
-    // company preferences 
+    // The second array is always the company's programmer preferences 
     {4, 0, 3, 1, 2},
     {3, 4, 1, 0, 2},
     {3, 1, 2, 4, 0},
@@ -126,3 +114,23 @@ public static void main(String[] args)
 }
 }
 
+// 1. The algorithm develops satisfactory pairs.
+// 2. Need more test cases.
+// 3. The code works by looking at each programmer, and matching
+// them with their first preference. If their preference is taken,
+// they check if that company would prefer the programmer in question
+// rather than the company's current match. If they do, the programmer
+// is matched with that company, and the programmer who used to be matched
+// is set as free. This makes sure there is no satisfactory pairing left 
+// unchecked, since it loops through each programmer's preferences and
+// when there may be a more satisfactory pairing, it checks the company's
+// preferences as well.
+// It stops when it has looped over each programmer's
+// preferences and does not find a company that both prefers them,
+// and that they prefer.
+
+// 4. Algorithm efficiency may be n^2? It looks at every programmer,
+// and then checks the array for the companies as well;
+// n^2 would make sense too because we have a for loop that 
+// calls another for loop, and each do the work of n (looking through
+// the array.)

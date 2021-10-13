@@ -83,11 +83,10 @@ static void match(int prefer[][])
  
  
 // print matches
-System.out.println("Company Programmer");
 for (int i = 0; i < N; i++)
 {
     System.out.print(" ");
-    System.out.println(i + N + "     " + companyProgrammer[i]);
+    System.out.println("Company " + (i + N) + " matched with Programmer " + companyProgrammer[i]);
 }
 }
  
@@ -96,32 +95,32 @@ public static void main(String[] args)
 {
     int prefer[][] = new int[][]{
     // The first array is the programmer's company preferences; all same
-    // {5,6,7,8,9},
-    // {5,6,7,8,9},
-    // {5,6,7,8,9},
-    // {5,6,7,8,9},
-    // {5,6,7,8,9},
+    {5,6,7,8,9},
+    {5,6,7,8,9},
+    {5,6,7,8,9},
+    {5,6,7,8,9},
+    {5,6,7,8,9},
 
     // more sets test data - randomly generated
-    {9, 6, 5, 7, 8},
-    {5, 8, 6, 9, 7},
-    {5, 9, 8, 7, 6},
-    {7, 8, 6, 5, 9},
-    {8, 7, 5, 9, 6},
+    // {9, 6, 5, 7, 8},
+    // {5, 8, 6, 9, 7},
+    // {5, 9, 8, 7, 6},
+    // {7, 8, 6, 5, 9},
+    // {8, 7, 5, 9, 6},
 
     // The second array is always the company's programmer preferences 
-    {0,1,2,3,4},
-    {0,1,2,3,4},
-    {0,1,2,3,4},
-    {0,1,2,3,4},
-    {0,1,2,3,4}
+    // {0,1,2,3,4},
+    // {0,1,2,3,4},
+    // {0,1,2,3,4},
+    // {0,1,2,3,4},
+    // {0,1,2,3,4}
 
     //more sets of test data - randomly generated
-    // {4, 1, 3, 0, 2},
-    // {2, 4, 3, 1, 0},
-    // {0, 4, 2, 1, 3},
-    // {0, 2, 1, 4, 3},
-    // {1, 0, 4, 3, 2}
+    {4, 1, 3, 0, 2},
+    {2, 4, 3, 1, 0},
+    {0, 4, 2, 1, 3},
+    {0, 2, 1, 4, 3},
+    {1, 0, 4, 3, 2}
    };
     match(prefer);
 }

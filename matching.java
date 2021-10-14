@@ -127,7 +127,9 @@ public static void main(String[] args)
 }
 
 // 1. The algorithm develops satisfactory pairs.
-// 2. Need more test cases.
+
+// 2. The test cases are in the main file.
+
 // 3. The code works by looking at each programmer, and matching
 // them with their first preference. If their preference is taken,
 // they check if that company would prefer the programmer in question
@@ -138,11 +140,11 @@ public static void main(String[] args)
 // when there may be a more satisfactory pairing, it checks the company's
 // preferences as well.
 // It stops when it has looped over each programmer's
-// preferences and does not find a company that both prefers them,
-// and that they prefer.
+// preferences and for each programmer, does not find a company 
+// that both prefers them, and that they prefer.
 
-// 4. Algorithm efficiency may be n^2? It looks at every programmer,
+// 4. Algorithm efficiency is n^2. It looks at every programmer,
 // and then checks the array for the companies as well;
-// n^2 would make sense too because we have a for loop that 
-// calls another for loop, and each do the work of n (looking through
-// the array.)
+// the worst case is when the algorithm has to compare each programmer's preference;
+// so the worst case is when every programmer has the same preferences 
+// for companies and company has the same preferences for programmers.

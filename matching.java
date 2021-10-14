@@ -148,3 +148,9 @@ public static void main(String[] args)
 // the worst case is when the algorithm has to compare each programmer's preference;
 // so the worst case is when every programmer has the same preferences 
 // for companies and company has the same preferences for programmers.
+
+// Potential improvement:
+// It could be possible to store programmers and companies in more specialized object types.
+// This could allow for a good deal of efficiency, by having programmers remember where they
+// "interviewed at" and thus not repeat interviews.  This would improve efficiency in the
+// worst case, but it would still remain O(n^2).
